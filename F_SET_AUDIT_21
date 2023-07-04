@@ -1,3 +1,12 @@
+Campos de auditoria en tabla:
+
+UNAME	XUMODIFIER	CHAR	12	0	Modificado por
+UDATE	XUMODDATE	DATS	8	0	Fecha de modificación
+UTIME	XUMODTIME	TIMS	6	0	Hora de la modificación
+
+*&---------------------------------------------------------------------*
+*& Form F_SET_AUDIT_21
+*&---------------------------------------------------------------------*
 FORM F_SET_AUDIT_21.
   TYPES: BEGIN Of ty_audit,
          FROM  TYPE FIELDNAME, "campo destino de valor
