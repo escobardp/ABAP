@@ -1,0 +1,38 @@
+FORM F_SET_AUDIT_21.
+  TYPES: BEGIN Of ty_audit,
+         FROM  TYPE FIELDNAME, "campo destino de valor
+         TO    type FIELDNAME, "Campo de donde se tomara el valor SY
+         END   OF ty_audit.
+
+  DATA: lt_audit TYPE STANDARD TABLE OF ty_audit,
+        lw_audit TYPE ty_audit.
+
+  FielD-SYMBOLS: <fw_total>,
+                 <fl_field>,
+                 <fl_from>.
+* Campos a tener en cuenta para la asignacion de valores ---------{*
+* ----------------------------------------------------------------}*
+  MOVE: 'SY-UNAME' TO lw_audit-from,
+        'UNAME'    TO lw_audit-to.
+  APPEND lw_audit  TO lt_audit.
+
+  MOVE: 'SY-TIMLO' TO lw_audit-from,
+        'UTIME'    TO lw_audit-to.
+  APPEND lw_audit  TO lt_audit.
+
+  MOVE: 'SY-DATLO' To lw_audit-from,
+        'UDATE'    TO lw_audit-to.
+  APPEND lw_audit  TO lt_audit.
+* ----------------------------------------------------------------}*
+  ASSIGN (x_header-VIEWNAME) TO <fw_total>.
+* Asigna los valores a cada campo declarado
+  LOOP At lt_audit INTO lw_audit.
+    UNASSIGN <fl_field>.
+    ASSIGN COMPONENT lw_audit-to OF STRUCTURE <fw_total> TO <fl_field>.
+    CHECK SY-SUBRC IS INITIAL.
+    ASSIGN (lw_audit-from) TO <fl_from>.
+    CHECK SY-SUBRC IS INITiaL.
+    MOVE <fl_from> TO <fl_field>.
+  ENDLOOP.
+
+ENDFORM. 
